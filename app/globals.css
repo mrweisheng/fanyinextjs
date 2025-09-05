@@ -1,0 +1,514 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+/* 自定义动画 */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 自定义组件样式 */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.gradient-text {
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #6366f1);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite;
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #2563eb, #7c3aed);
+}
+
+/* 输入框焦点效果 */
+.focus-ring {
+  transition: all 0.3s ease;
+}
+
+.focus-ring:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+}
+
+/* 按钮悬停效果 */
+.btn-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-hover:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* 卡片悬停效果 */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* 高级粒子特效系统 */
+.particles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* 粒子基础样式 */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(45deg, rgba(59, 130, 246, 0.4), rgba(139, 92, 246, 0.4));
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+  animation: particle-float 12s infinite linear;
+}
+
+/* 大粒子 */
+.large-particle {
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(45deg, rgba(59, 130, 246, 0.6), rgba(139, 92, 246, 0.6));
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4), 0 0 30px rgba(139, 92, 246, 0.2);
+}
+
+/* 中粒子 */
+.medium-particle {
+  width: 5px;
+  height: 5px;
+  background: linear-gradient(45deg, rgba(99, 102, 241, 0.5), rgba(139, 92, 246, 0.5));
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.3);
+}
+
+/* 小粒子 */
+.small-particle {
+  width: 3px;
+  height: 3px;
+  background: linear-gradient(45deg, rgba(59, 130, 246, 0.3), rgba(99, 102, 241, 0.3));
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.2);
+}
+
+/* 粒子位置和动画 */
+.particle-1 { top: 20%; left: 10%; animation-delay: 0s; animation-duration: 15s; }
+.particle-2 { top: 30%; left: 80%; animation-delay: 2s; animation-duration: 12s; }
+.particle-3 { top: 60%; left: 20%; animation-delay: 4s; animation-duration: 18s; }
+.particle-4 { top: 70%; left: 70%; animation-delay: 6s; animation-duration: 14s; }
+.particle-5 { top: 40%; left: 50%; animation-delay: 8s; animation-duration: 16s; }
+.particle-6 { top: 60%; left: 15%; animation-delay: 1s; animation-duration: 13s; }
+.particle-7 { top: 15%; left: 60%; animation-delay: 3s; animation-duration: 11s; }
+.particle-8 { top: 80%; left: 80%; animation-delay: 5s; animation-duration: 17s; }
+.particle-9 { top: 25%; left: 30%; animation-delay: 7s; animation-duration: 15s; }
+.particle-10 { top: 55%; left: 85%; animation-delay: 9s; animation-duration: 12s; }
+.particle-11 { top: 40%; left: 25%; animation-delay: 1.5s; animation-duration: 14s; }
+.particle-12 { top: 45%; left: 75%; animation-delay: 3.5s; animation-duration: 16s; }
+.particle-13 { top: 75%; left: 40%; animation-delay: 5.5s; animation-duration: 13s; }
+.particle-14 { top: 20%; left: 90%; animation-delay: 7.5s; animation-duration: 11s; }
+.particle-15 { top: 85%; left: 5%; animation-delay: 9.5s; animation-duration: 17s; }
+
+/* 气泡系统 */
+.bubbles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, 
+    rgba(255, 255, 255, 0.8) 0%, 
+    rgba(96, 165, 250, 0.4) 30%, 
+    rgba(59, 130, 246, 0.2) 70%, 
+    transparent 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    inset 0 0 10px rgba(255, 255, 255, 0.3),
+    0 0 10px rgba(96, 165, 250, 0.2);
+  animation: bubble-rise 8s infinite linear;
+}
+
+/* 气泡大小变体 - 更随机的大小分布 */
+.bubble-1 { width: 6px; height: 6px; animation-duration: 6s; }
+.bubble-2 { width: 15px; height: 15px; animation-duration: 9s; }
+.bubble-3 { width: 8px; height: 8px; animation-duration: 7s; }
+.bubble-4 { width: 25px; height: 25px; animation-duration: 12s; }
+.bubble-5 { width: 10px; height: 10px; animation-duration: 8s; }
+.bubble-6 { width: 4px; height: 4px; animation-duration: 5s; }
+.bubble-7 { width: 18px; height: 18px; animation-duration: 10s; }
+.bubble-8 { width: 12px; height: 12px; animation-duration: 8s; }
+.bubble-9 { width: 30px; height: 30px; animation-duration: 14s; }
+.bubble-10 { width: 7px; height: 7px; animation-duration: 6s; }
+.bubble-11 { width: 20px; height: 20px; animation-duration: 11s; }
+.bubble-12 { width: 5px; height: 5px; animation-duration: 5s; }
+.bubble-13 { width: 14px; height: 14px; animation-duration: 9s; }
+.bubble-14 { width: 22px; height: 22px; animation-duration: 12s; }
+.bubble-15 { width: 9px; height: 9px; animation-duration: 7s; }
+
+/* 气泡位置分布 - 随机分布 */
+.bubble-1 { left: 3%; animation-delay: 0s; }
+.bubble-2 { left: 12%; animation-delay: 1.2s; }
+.bubble-3 { left: 28%; animation-delay: 2.1s; }
+.bubble-4 { left: 45%; animation-delay: 3.3s; }
+.bubble-5 { left: 62%; animation-delay: 4.7s; }
+.bubble-6 { left: 78%; animation-delay: 0.6s; }
+.bubble-7 { left: 8%; animation-delay: 1.8s; }
+.bubble-8 { left: 35%; animation-delay: 2.9s; }
+.bubble-9 { left: 55%; animation-delay: 4.2s; }
+.bubble-10 { left: 72%; animation-delay: 5.1s; }
+.bubble-11 { left: 18%; animation-delay: 0.9s; }
+.bubble-12 { left: 42%; animation-delay: 2.4s; }
+.bubble-13 { left: 68%; animation-delay: 3.6s; }
+.bubble-14 { left: 85%; animation-delay: 4.8s; }
+.bubble-15 { left: 25%; animation-delay: 1.5s; }
+
+/* 多方向流星轨迹定义 */
+/* 左上到右下 */
+.meteor-1 {
+  top: -50px;
+  left: -100px;
+  animation-delay: 0s;
+  animation-duration: 2.5s;
+  animation-name: meteor-shower-diagonal-down;
+}
+
+.meteor-2 {
+  top: -50px;
+  left: -100px;
+  animation-delay: 6s;
+  animation-duration: 3s;
+  animation-name: meteor-shower-diagonal-down;
+}
+
+/* 右上到左下 */
+.meteor-3 {
+  top: -50px;
+  left: calc(100vw + 100px);
+  animation-delay: 12s;
+  animation-duration: 2.8s;
+  animation-name: meteor-shower-diagonal-up;
+}
+
+.meteor-4 {
+  top: -50px;
+  left: calc(100vw + 100px);
+  animation-delay: 18s;
+  animation-duration: 3.2s;
+  animation-name: meteor-shower-diagonal-up;
+}
+
+/* 上到下 */
+.meteor-5 {
+  top: -50px;
+  left: 20%;
+  animation-delay: 24s;
+  animation-duration: 2.7s;
+  animation-name: meteor-shower-vertical;
+}
+
+.meteor-6 {
+  top: -50px;
+  left: 60%;
+  animation-delay: 30s;
+  animation-duration: 3.1s;
+  animation-name: meteor-shower-vertical;
+}
+
+/* 左到右 */
+.meteor-7 {
+  top: 20%;
+  left: -100px;
+  animation-delay: 36s;
+  animation-duration: 2.9s;
+  animation-name: meteor-shower-horizontal;
+}
+
+.meteor-8 {
+  top: 70%;
+  left: -100px;
+  animation-delay: 42s;
+  animation-duration: 3.3s;
+  animation-name: meteor-shower-horizontal;
+}
+
+/* 随机角度 */
+.meteor-9 {
+  top: -50px;
+  left: -100px;
+  animation-delay: 48s;
+  animation-duration: 2.6s;
+  animation-name: meteor-shower-random-1;
+}
+
+.meteor-10 {
+  top: -50px;
+  left: calc(100vw + 100px);
+  animation-delay: 54s;
+  animation-duration: 3.4s;
+  animation-name: meteor-shower-random-2;
+}
+
+/* 光效系统 */
+.glow-effects {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glow-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+  animation: glow-pulse 6s infinite ease-in-out;
+}
+
+.glow-1 {
+  width: 200px;
+  height: 200px;
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.glow-2 {
+  width: 150px;
+  height: 150px;
+  top: 60%;
+  left: 70%;
+  animation-delay: 2s;
+}
+
+.glow-3 {
+  width: 180px;
+  height: 180px;
+  top: 40%;
+  left: 50%;
+  animation-delay: 4s;
+}
+
+.glow-4 {
+  width: 120px;
+  height: 120px;
+  top: 80%;
+  left: 20%;
+  animation-delay: 1s;
+}
+
+/* 动画定义 */
+@keyframes particle-float {
+  0% {
+    transform: translateY(100vh) translateX(0px) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(90vh) translateX(10px) rotate(36deg) scale(1);
+  }
+  50% {
+    transform: translateY(50vh) translateX(25px) rotate(180deg) scale(1.1);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(10vh) translateX(40px) rotate(324deg) scale(1);
+  }
+  100% {
+    transform: translateY(-10vh) translateX(50px) rotate(360deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* 气泡上升动画 */
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(calc(100vh + 50px)) translateX(0px) scale(0.5);
+    opacity: 0.8;
+  }
+  10% {
+    transform: translateY(calc(90vh + 50px)) translateX(5px) scale(0.7);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(calc(50vh + 50px)) translateX(-3px) scale(1.2);
+    opacity: 0.6;
+  }
+  90% {
+    transform: translateY(calc(10vh + 50px)) translateX(2px) scale(1.5);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-50px) translateX(0px) scale(1.8);
+    opacity: 0;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.2);
+  }
+}
+
+/* 增强气泡视觉效果 */
+.bubble {
+  filter: drop-shadow(0 0 3px rgba(96, 165, 250, 0.3));
+}
+
+/* 不同颜色的气泡变体 */
+.bubble-2, .bubble-4, .bubble-6, .bubble-8, .bubble-10, .bubble-12, .bubble-14 {
+  background: radial-gradient(circle at 30% 30%, 
+    rgba(255, 255, 255, 0.7) 0%, 
+    rgba(167, 139, 250, 0.4) 30%, 
+    rgba(139, 92, 246, 0.2) 70%, 
+    transparent 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    inset 0 0 8px rgba(255, 255, 255, 0.2),
+    0 0 8px rgba(167, 139, 250, 0.2);
+}
+
+.bubble-3, .bubble-5, .bubble-7, .bubble-9, .bubble-11, .bubble-13, .bubble-15 {
+  background: radial-gradient(circle at 30% 30%, 
+    rgba(255, 255, 255, 0.6) 0%, 
+    rgba(99, 102, 241, 0.3) 30%, 
+    rgba(67, 56, 202, 0.2) 70%, 
+    transparent 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    inset 0 0 6px rgba(255, 255, 255, 0.25),
+    0 0 6px rgba(99, 102, 241, 0.15);
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .large-particle {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .medium-particle {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .small-particle {
+    width: 2px;
+    height: 2px;
+  }
+  
+  /* 移动端气泡尺寸调整 */
+  .bubble-1 { width: 4px; height: 4px; }
+  .bubble-2 { width: 10px; height: 10px; }
+  .bubble-3 { width: 5px; height: 5px; }
+  .bubble-4 { width: 16px; height: 16px; }
+  .bubble-5 { width: 7px; height: 7px; }
+  .bubble-6 { width: 3px; height: 3px; }
+  .bubble-7 { width: 12px; height: 12px; }
+  .bubble-8 { width: 8px; height: 8px; }
+  .bubble-9 { width: 20px; height: 20px; }
+  .bubble-10 { width: 5px; height: 5px; }
+  .bubble-11 { width: 13px; height: 13px; }
+  .bubble-12 { width: 3px; height: 3px; }
+  .bubble-13 { width: 9px; height: 9px; }
+  .bubble-14 { width: 15px; height: 15px; }
+  .bubble-15 { width: 6px; height: 6px; }
+  
+  .glow-effect {
+    transform: scale(0.7);
+  }
+}
