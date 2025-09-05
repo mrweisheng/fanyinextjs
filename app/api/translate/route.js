@@ -23,7 +23,7 @@ export async function POST(request) {
     }
 
     // 固定提示词
-    const prompt = `请将以下文本翻译成地道的香港粤语，只输出翻译结果，不要添加任何说明、解释或注释：${text}`;
+    const prompt = `请将以下文本翻译成地道的香港粤语，不要额外添加或删减内容，仅基于原文进行翻译，只输出翻译结果，不要添加任何说明、解释或注释：${text}`;
 
     console.log('收到翻译请求，文本长度:', text.length);
 
