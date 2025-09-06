@@ -1,5 +1,44 @@
-// 直接从项目配置文件读取环境变量
+// 使用 dotenv 包读取环境变量
+function loadEnvVars() {
+  try {
+    const dotenv = require('dotenv');
+    const path = require('path');
+    
+    // 尝试多个环境文件路径
+    const envPaths = [
+      path.join(process.cwd(), '.env.local'),
+      path.join(process.cwd(), '.env'),
+      path.join(process.cwd(), '.env.production')
+    ];
+    
+    for (const envPath of envPaths) {
+      if (require('fs').existsSync(envPath)) {
+        console.log('找到环境文件:', envPath);
+        const result = dotenv.config({ path: envPath });
+        if (result.error) {
+          console.warn('加载环境文件失败:', envPath, result.error);
+        } else {
+          console.log('成功加载环境文件:', envPath);
+          break;
+        }
+      }
+    }
+  } catch (error) {
+    console.warn('dotenv 加载失败:', error.message);
+  }
+}
+
+// 加载环境变量
+loadEnvVars();
+
+// 获取环境变量
 function getEnvVar(key, defaultValue = '') {
+  // 优先从 process.env 读取
+  if (process.env[key]) {
+    return process.env[key];
+  }
+  
+  // 备用方案：手动读取文件
   try {
     const fs = require('fs');
     const path = require('path');
@@ -20,7 +59,7 @@ function getEnvVar(key, defaultValue = '') {
       }
     }
   } catch (error) {
-    console.warn(`读取.env文件失败: ${error.message}`);
+    console.warn(`手动读取.env文件失败: ${error.message}`);
   }
   
   return defaultValue;
