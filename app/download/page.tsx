@@ -62,26 +62,16 @@ export default function DownloadPage() {
       setIsProcessing(true)
       showResult('正在获取下载链接，请稍候...', 'success')
       
-      // 调用Coze API
-      const response = await fetch('https://api.coze.cn/v1/workflows/chat', {
+      // 调用Coze API代理
+      const response = await fetch('/api/coze', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_COZE_API_TOKEN}`,
           'Content-Type': 'application/json',
           'Accept': 'text/event-stream'
         },
         body: JSON.stringify({
-          "workflow_id": process.env.NEXT_PUBLIC_COZE_WORKFLOW_ID_DOWNLOAD || "7527869690576699430",
-          "parameters": {
-            "input": videoUrl
-          },
-          "additional_messages": [
-            {
-              "content_type": "text",
-              "role": "user",
-              "type": "question"
-            }
-          ]
+          "workflow_id": "7527869690576699430",
+          "input": videoUrl
         })
       })
 

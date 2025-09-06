@@ -79,19 +79,16 @@ export default function ExtractPage() {
       setOrganizedText('')
       showResult('正在提取视频文案，请稍候...', 'success')
       
-      // 调用Coze API
-      const response = await fetch(process.env.NEXT_PUBLIC_COZE_API_URL || 'https://api.coze.cn/v1/workflow/stream_run', {
+      // 调用Coze API代理
+      const response = await fetch('/api/coze', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_COZE_API_TOKEN}`,
           'Content-Type': 'application/json',
           'Accept': 'text/event-stream'
         },
         body: JSON.stringify({
-          "workflow_id": process.env.NEXT_PUBLIC_COZE_WORKFLOW_ID_EXTRACT || "7511939386046218291",
-          "parameters": {
-            "input": videoUrl
-          }
+          "workflow_id": "7511939386046218291",
+          "input": videoUrl
         })
       })
 
