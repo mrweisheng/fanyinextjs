@@ -1,12 +1,56 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function DownloadPage() {
   const [videoUrl, setVideoUrl] = useState('')
   const [result, setResult] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
   const [resultType, setResultType] = useState('')
+
+  // 页面加载时恢复状态
+  useEffect(() => {
+    const savedVideoUrl = localStorage.getItem('download-videoUrl')
+    const savedResult = localStorage.getItem('download-result')
+    const savedResultType = localStorage.getItem('download-resultType')
+    
+    if (savedVideoUrl) {
+      setVideoUrl(savedVideoUrl)
+    }
+    if (savedResult) {
+      setResult(savedResult)
+    }
+    if (savedResultType) {
+      setResultType(savedResultType)
+    }
+  }, [])
+
+  // 保存视频链接到localStorage
+  useEffect(() => {
+    if (videoUrl) {
+      localStorage.setItem('download-videoUrl', videoUrl)
+    } else {
+      localStorage.removeItem('download-videoUrl')
+    }
+  }, [videoUrl])
+
+  // 保存结果到localStorage
+  useEffect(() => {
+    if (result) {
+      localStorage.setItem('download-result', result)
+    } else {
+      localStorage.removeItem('download-result')
+    }
+  }, [result])
+
+  // 保存结果类型到localStorage
+  useEffect(() => {
+    if (resultType) {
+      localStorage.setItem('download-resultType', resultType)
+    } else {
+      localStorage.removeItem('download-resultType')
+    }
+  }, [resultType])
 
   const handleSubmit = async () => {
     if (!videoUrl.trim()) {
@@ -22,12 +66,12 @@ export default function DownloadPage() {
       const response = await fetch('https://api.coze.cn/v1/workflows/chat', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer sat_E6Nr9kleEW22WDXoO73Thz06C4Goj37CHshG6Rf2TRXEsSp90BCxwWjVNrlaJvMm',
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_COZE_API_TOKEN}`,
           'Content-Type': 'application/json',
           'Accept': 'text/event-stream'
         },
         body: JSON.stringify({
-          "workflow_id": "7527869690576699430",
+          "workflow_id": process.env.NEXT_PUBLIC_COZE_WORKFLOW_ID_DOWNLOAD || "7527869690576699430",
           "parameters": {
             "input": videoUrl
           },
@@ -157,8 +201,8 @@ export default function DownloadPage() {
   }
 
   return (
-    <div className="relative z-10 min-h-screen flex flex-col justify-center">
-      <div className="container mx-auto px-4 py-8">
+    <div className="relative z-10 min-h-screen flex flex-col">
+      <div className="container mx-auto px-4 pt-20 pb-8">
         {/* 头部标题 */}
         <div className="text-center mb-8 md:mb-12">
           <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-3 md:mb-4">
@@ -170,7 +214,7 @@ export default function DownloadPage() {
         </div>
 
         {/* 下载界面 */}
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl shadow-lg p-8">
             {/* 输入区域 */}
             <div className="mb-6">

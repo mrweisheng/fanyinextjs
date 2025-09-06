@@ -23,6 +23,16 @@ export default function Navigation() {
                 粤语翻译
               </Link>
               <Link
+                href="/extract"
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                  pathname === '/extract'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                    : 'text-gray-700 hover:bg-white/30 hover:text-gray-900'
+                }`}
+              >
+                文案提取
+              </Link>
+              <Link
                 href="/download"
                 className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                   pathname === '/download'

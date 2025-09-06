@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TypewriterText from '@/components/TypewriterText'
 
 // 测试自动部署
@@ -9,6 +9,37 @@ export default function TranslatePage() {
   const [inputText, setInputText] = useState('')
   const [outputText, setOutputText] = useState('')
   const [isTranslating, setIsTranslating] = useState(false)
+
+  // 页面加载时恢复状态
+  useEffect(() => {
+    const savedInputText = localStorage.getItem('translate-inputText')
+    const savedOutputText = localStorage.getItem('translate-outputText')
+    
+    if (savedInputText) {
+      setInputText(savedInputText)
+    }
+    if (savedOutputText) {
+      setOutputText(savedOutputText)
+    }
+  }, [])
+
+  // 保存输入文本到localStorage
+  useEffect(() => {
+    if (inputText) {
+      localStorage.setItem('translate-inputText', inputText)
+    } else {
+      localStorage.removeItem('translate-inputText')
+    }
+  }, [inputText])
+
+  // 保存输出文本到localStorage
+  useEffect(() => {
+    if (outputText) {
+      localStorage.setItem('translate-outputText', outputText)
+    } else {
+      localStorage.removeItem('translate-outputText')
+    }
+  }, [outputText])
 
   const handleTranslate = async () => {
     if (!inputText.trim()) return
@@ -62,8 +93,8 @@ export default function TranslatePage() {
   }
 
   return (
-    <div className="relative z-10 min-h-screen flex flex-col justify-center">
-      <div className="container mx-auto px-4 py-8">
+    <div className="relative z-10 min-h-screen flex flex-col">
+      <div className="container mx-auto px-4 pt-20 pb-8">
         {/* 头部标题 */}
         <div className="text-center mb-8 md:mb-12">
           <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-3 md:mb-4">

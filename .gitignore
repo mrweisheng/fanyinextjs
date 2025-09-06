@@ -35,3 +35,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 敏感文档和配置文件
+PM2环境变量设置文档.md
+env.txt
+*.env.txt
+*环境变量*.md
+*配置文档*.md
