@@ -1,11 +1,5 @@
-// 读取环境变量的辅助函数
+// 直接从项目配置文件读取环境变量
 function getEnvVar(key, defaultValue = '') {
-  // 优先从process.env读取（PM2环境变量）
-  if (process.env[key]) {
-    return process.env[key];
-  }
-  
-  // 如果PM2环境变量不存在，尝试从.env文件读取
   try {
     const fs = require('fs');
     const path = require('path');
@@ -40,7 +34,6 @@ export async function POST(request) {
   try {
     // 调试日志：显示环境变量状态
     console.log('环境变量调试信息:');
-    console.log('- DEEPSEEK_API_KEY from process.env:', process.env.DEEPSEEK_API_KEY ? '已设置' : '未设置');
     console.log('- DEEPSEEK_API_KEY from .env:', API_KEY ? '已设置' : '未设置');
     console.log('- API_URL:', API_URL);
     
@@ -48,7 +41,6 @@ export async function POST(request) {
     if (!API_KEY) {
       return Response.json(
         { success: false, error: 'API密钥未配置', debug: { 
-          processEnv: !!process.env.DEEPSEEK_API_KEY,
           envFile: !!API_KEY,
           apiUrl: API_URL 
         }},
