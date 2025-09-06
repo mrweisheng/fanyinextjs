@@ -165,7 +165,7 @@ export default function DownloadPage() {
             短视频下载工具
           </h1>
           <p className="text-gray-600 text-sm md:text-lg max-w-2xl mx-auto px-4">
-            支持多平台短视频下载，快速获取高清视频资源
+            抖音平台短视频下载，快速获取高清视频资源
           </p>
         </div>
 
