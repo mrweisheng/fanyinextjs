@@ -12,6 +12,8 @@ jobs:
     - name: Deploy to server
       run: |
         echo "🚀 开始自动部署..."
-        # 使用curl调用服务器上的部署脚本
-        curl -X POST http://103.117.122.232:9000/deploy
+        # 使用HTTPS域名调用服务器上的部署脚本
+        curl -X POST https://utils.huaxing.help:9000/deploy \
+          -H "Authorization: Bearer ${{ secrets.DEPLOY_TOKEN }}" \
+          -H "Content-Type: application/json"
         echo "✅ 部署请求已发送！"
