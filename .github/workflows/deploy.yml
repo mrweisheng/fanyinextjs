@@ -1,0 +1,30 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v0.1.5
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          echo "🚀 开始自动部署..."
+          cd /var/www/fanyinextjs
+          echo "📥 拉取最新代码..."
+          git pull origin master
+          echo "📦 安装依赖..."
+          npm install
+          echo "🔨 构建项目..."
+          npm run build
+          echo "🔄 重启应用..."
+          pm2 restart fanyinextjs
+          echo "✅ 部署完成！"
+          pm2 status
