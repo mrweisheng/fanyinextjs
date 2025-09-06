@@ -66,7 +66,8 @@ function getEnvVar(key, defaultValue = '') {
 }
 
 // Coze API配置
-const COZE_API_URL = getEnvVar('NEXT_PUBLIC_COZE_API_URL', 'https://api.coze.cn/v1/workflow/stream_run');
+const COZE_API_URL_EXTRACT = getEnvVar('NEXT_PUBLIC_COZE_API_URL_EXTRACT', 'https://api.coze.cn/v1/workflow/stream_run');
+const COZE_API_URL_DOWNLOAD = getEnvVar('NEXT_PUBLIC_COZE_API_URL_DOWNLOAD', 'https://api.coze.cn/v1/workflows/chat');
 const COZE_API_TOKEN = getEnvVar('NEXT_PUBLIC_COZE_API_TOKEN');
 const COZE_WORKFLOW_ID_EXTRACT = getEnvVar('NEXT_PUBLIC_COZE_WORKFLOW_ID_EXTRACT', '7511939386046218291');
 const COZE_WORKFLOW_ID_DOWNLOAD = getEnvVar('NEXT_PUBLIC_COZE_WORKFLOW_ID_DOWNLOAD', '7527869690576699430');
@@ -77,7 +78,8 @@ export async function POST(request) {
     console.log('=== Coze API 代理调试信息 ===');
     console.log('- COZE_API_TOKEN 长度:', COZE_API_TOKEN ? COZE_API_TOKEN.length : 0);
     console.log('- COZE_API_TOKEN 前10位:', COZE_API_TOKEN ? COZE_API_TOKEN.substring(0, 10) + '...' : '未设置');
-    console.log('- COZE_API_URL:', COZE_API_URL);
+    console.log('- COZE_API_URL_EXTRACT:', COZE_API_URL_EXTRACT);
+    console.log('- COZE_API_URL_DOWNLOAD:', COZE_API_URL_DOWNLOAD);
     console.log('- 当前工作目录:', process.cwd());
     console.log('- .env.local 文件路径:', require('path').join(process.cwd(), '.env.local'));
     
@@ -108,20 +110,55 @@ export async function POST(request) {
       );
     }
 
-    console.log('调用Coze API，工作流ID:', workflow_id);
-    console.log('请求URL:', COZE_API_URL);
-    console.log('Authorization Header:', `Bearer ${COZE_API_TOKEN.substring(0, 20)}...`);
+    // 根据工作流ID选择API端点和请求体格式
+    let apiUrl, requestBody;
+    
+    if (workflow_id === COZE_WORKFLOW_ID_EXTRACT) {
+      // 提取功能：使用 stream_run 端点
+      apiUrl = COZE_API_URL_EXTRACT;
+      requestBody = {
+        "workflow_id": workflow_id,
+        "parameters": {
+          "input": input
+        }
+      };
+    } else if (workflow_id === COZE_WORKFLOW_ID_DOWNLOAD) {
+      // 下载功能：使用 chat 端点
+      apiUrl = COZE_API_URL_DOWNLOAD;
+      requestBody = {
+        "workflow_id": workflow_id,
+        "parameters": {
+          "CONVERSATION_NAME": "Default",
+          "USER_INPUT": input,
+          "input": input
+        },
+        "additional_messages": [
+          {
+            "content": input,
+            "content_type": "text",
+            "role": "user",
+            "type": "question"
+          }
+        ]
+      };
+    } else {
+      // 默认使用提取功能格式
+      apiUrl = COZE_API_URL_EXTRACT;
+      requestBody = {
+        "workflow_id": workflow_id,
+        "parameters": {
+          "input": input
+        }
+      };
+    }
 
-    const requestBody = {
-      "workflow_id": workflow_id,
-      "parameters": {
-        "input": input
-      }
-    };
+    console.log('调用Coze API，工作流ID:', workflow_id);
+    console.log('请求URL:', apiUrl);
+    console.log('Authorization Header:', `Bearer ${COZE_API_TOKEN.substring(0, 20)}...`);
     console.log('请求体:', JSON.stringify(requestBody, null, 2));
 
     // 调用Coze API
-    const response = await fetch(COZE_API_URL, {
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${COZE_API_TOKEN}`,
