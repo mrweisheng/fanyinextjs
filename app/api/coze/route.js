@@ -34,15 +34,27 @@ const COZE_WORKFLOW_ID_DOWNLOAD = getEnvVar('NEXT_PUBLIC_COZE_WORKFLOW_ID_DOWNLO
 
 export async function POST(request) {
   try {
-    // 调试日志
-    console.log('Coze API 代理调试信息:');
-    console.log('- COZE_API_TOKEN:', COZE_API_TOKEN ? '已设置' : '未设置');
+    // 详细调试日志
+    console.log('=== Coze API 代理调试信息 ===');
+    console.log('- COZE_API_TOKEN 长度:', COZE_API_TOKEN ? COZE_API_TOKEN.length : 0);
+    console.log('- COZE_API_TOKEN 前10位:', COZE_API_TOKEN ? COZE_API_TOKEN.substring(0, 10) + '...' : '未设置');
     console.log('- COZE_API_URL:', COZE_API_URL);
+    console.log('- 当前工作目录:', process.cwd());
+    console.log('- .env.local 文件路径:', require('path').join(process.cwd(), '.env.local'));
     
     // 检查API密钥
     if (!COZE_API_TOKEN) {
       return Response.json(
-        { success: false, error: 'Coze API密钥未配置' },
+        { 
+          success: false, 
+          error: 'Coze API密钥未配置',
+          debug: {
+            tokenLength: COZE_API_TOKEN ? COZE_API_TOKEN.length : 0,
+            apiUrl: COZE_API_URL,
+            workingDir: process.cwd(),
+            envFileExists: require('fs').existsSync(require('path').join(process.cwd(), '.env.local'))
+          }
+        },
         { status: 500 }
       );
     }
@@ -58,6 +70,16 @@ export async function POST(request) {
     }
 
     console.log('调用Coze API，工作流ID:', workflow_id);
+    console.log('请求URL:', COZE_API_URL);
+    console.log('Authorization Header:', `Bearer ${COZE_API_TOKEN.substring(0, 20)}...`);
+
+    const requestBody = {
+      "workflow_id": workflow_id,
+      "parameters": {
+        "input": input
+      }
+    };
+    console.log('请求体:', JSON.stringify(requestBody, null, 2));
 
     // 调用Coze API
     const response = await fetch(COZE_API_URL, {
@@ -67,17 +89,18 @@ export async function POST(request) {
         'Content-Type': 'application/json',
         'Accept': 'text/event-stream'
       },
-      body: JSON.stringify({
-        "workflow_id": workflow_id,
-        "parameters": {
-          "input": input
-        }
-      })
+      body: JSON.stringify(requestBody)
     });
+
+    console.log('Coze API 响应状态:', response.status);
+    console.log('Coze API 响应头:', Object.fromEntries(response.headers.entries()));
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Coze API调用失败:', response.status, errorText);
+      console.error('Coze API调用失败详情:');
+      console.error('- 状态码:', response.status);
+      console.error('- 状态文本:', response.statusText);
+      console.error('- 错误响应:', errorText);
       throw new Error(`Coze API调用失败: ${response.status} - ${errorText}`);
     }
 
