@@ -1,13 +1,57 @@
+// 读取环境变量的辅助函数
+function getEnvVar(key, defaultValue = '') {
+  // 优先从process.env读取（PM2环境变量）
+  if (process.env[key]) {
+    return process.env[key];
+  }
+  
+  // 如果PM2环境变量不存在，尝试从.env文件读取
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const envPath = path.join(process.cwd(), '.env.local');
+    
+    if (fs.existsSync(envPath)) {
+      const envContent = fs.readFileSync(envPath, 'utf8');
+      const lines = envContent.split('\n');
+      
+      for (const line of lines) {
+        const trimmedLine = line.trim();
+        if (trimmedLine && !trimmedLine.startsWith('#')) {
+          const [envKey, ...envValueParts] = trimmedLine.split('=');
+          if (envKey.trim() === key) {
+            return envValueParts.join('=').trim();
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.warn(`读取.env文件失败: ${error.message}`);
+  }
+  
+  return defaultValue;
+}
+
 // DeepSeek API配置
-const API_URL = process.env.DEEPSEEK_API_URL || 'https://api.deepseek.com/chat/completions';
-const API_KEY = process.env.DEEPSEEK_API_KEY;
+const API_URL = getEnvVar('DEEPSEEK_API_URL', 'https://api.deepseek.com/chat/completions');
+const API_KEY = getEnvVar('DEEPSEEK_API_KEY');
 
 export async function POST(request) {
   try {
+    // 调试日志：显示环境变量状态
+    console.log('环境变量调试信息:');
+    console.log('- DEEPSEEK_API_KEY from process.env:', process.env.DEEPSEEK_API_KEY ? '已设置' : '未设置');
+    console.log('- DEEPSEEK_API_KEY from .env:', API_KEY ? '已设置' : '未设置');
+    console.log('- API_URL:', API_URL);
+    
     // 检查API密钥
     if (!API_KEY) {
       return Response.json(
-        { success: false, error: 'API密钥未配置' },
+        { success: false, error: 'API密钥未配置', debug: { 
+          processEnv: !!process.env.DEEPSEEK_API_KEY,
+          envFile: !!API_KEY,
+          apiUrl: API_URL 
+        }},
         { status: 500 }
       );
     }
