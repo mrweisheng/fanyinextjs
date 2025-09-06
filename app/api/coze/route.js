@@ -77,22 +77,22 @@ export async function POST(request) {
   try {
     // 详细调试日志
     console.log('=== Coze API 代理调试信息 ===');
-    console.log('- COZE_API_TOKEN 长度:', COZE_API_TOKEN ? COZE_API_TOKEN.length : 0);
-    console.log('- COZE_API_TOKEN 前10位:', COZE_API_TOKEN ? COZE_API_TOKEN.substring(0, 10) + '...' : '未设置');
+    console.log('- COZE_API_TOKEN_EXTRACT 长度:', COZE_API_TOKEN_EXTRACT ? COZE_API_TOKEN_EXTRACT.length : 0);
+    console.log('- COZE_API_TOKEN_DOWNLOAD 长度:', COZE_API_TOKEN_DOWNLOAD ? COZE_API_TOKEN_DOWNLOAD.length : 0);
     console.log('- COZE_API_URL_EXTRACT:', COZE_API_URL_EXTRACT);
     console.log('- COZE_API_URL_DOWNLOAD:', COZE_API_URL_DOWNLOAD);
     console.log('- 当前工作目录:', process.cwd());
     console.log('- .env.local 文件路径:', require('path').join(process.cwd(), '.env.local'));
     
     // 检查API密钥
-    if (!COZE_API_TOKEN) {
+    if (!COZE_API_TOKEN_EXTRACT || !COZE_API_TOKEN_DOWNLOAD) {
       return Response.json(
         { 
           success: false, 
           error: 'Coze API密钥未配置',
           debug: {
-            tokenLength: COZE_API_TOKEN ? COZE_API_TOKEN.length : 0,
-            apiUrl: COZE_API_URL,
+            extractTokenLength: COZE_API_TOKEN_EXTRACT ? COZE_API_TOKEN_EXTRACT.length : 0,
+            downloadTokenLength: COZE_API_TOKEN_DOWNLOAD ? COZE_API_TOKEN_DOWNLOAD.length : 0,
             workingDir: process.cwd(),
             envFileExists: require('fs').existsSync(require('path').join(process.cwd(), '.env.local'))
           }

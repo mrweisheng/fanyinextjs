@@ -1,5 +1,0 @@
-[33m8b82c05[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m fix: 修复Nginx转发Authorization头
-[33md89b491[m 修改下载文案
-[33m7a7d0ec[m fix: 修复SSL版本问题，使用正确的HTTPS端点
-[33m091f041[m test: 测试HTTPS安全部署
-[33m6f0d9f0[m feat: 使用HTTPS域名和认证进行安全部署
