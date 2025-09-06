@@ -68,7 +68,7 @@ export default function TranslatePage() {
             普通话转粤语翻译器
           </h1>
           <p className="text-gray-600 text-sm md:text-lg max-w-2xl mx-auto px-4">
-            专业的短视频文案翻译工具，将普通话内容转换为地道的香港粤语表达
+            将普通话内容转换为地道的香港粤语表达
           </p>
         </div>
 
