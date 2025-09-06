@@ -68,7 +68,8 @@ function getEnvVar(key, defaultValue = '') {
 // Coze API配置
 const COZE_API_URL_EXTRACT = getEnvVar('NEXT_PUBLIC_COZE_API_URL_EXTRACT', 'https://api.coze.cn/v1/workflow/stream_run');
 const COZE_API_URL_DOWNLOAD = getEnvVar('NEXT_PUBLIC_COZE_API_URL_DOWNLOAD', 'https://api.coze.cn/v1/workflows/chat');
-const COZE_API_TOKEN = getEnvVar('NEXT_PUBLIC_COZE_API_TOKEN');
+const COZE_API_TOKEN_EXTRACT = getEnvVar('NEXT_PUBLIC_COZE_API_TOKEN_EXTRACT');
+const COZE_API_TOKEN_DOWNLOAD = getEnvVar('NEXT_PUBLIC_COZE_API_TOKEN_DOWNLOAD');
 const COZE_WORKFLOW_ID_EXTRACT = getEnvVar('NEXT_PUBLIC_COZE_WORKFLOW_ID_EXTRACT', '7511939386046218291');
 const COZE_WORKFLOW_ID_DOWNLOAD = getEnvVar('NEXT_PUBLIC_COZE_WORKFLOW_ID_DOWNLOAD', '7527869690576699430');
 
@@ -110,12 +111,13 @@ export async function POST(request) {
       );
     }
 
-    // 根据工作流ID选择API端点和请求体格式
-    let apiUrl, requestBody;
+    // 根据工作流ID选择API端点、Token和请求体格式
+    let apiUrl, apiToken, requestBody;
     
     if (workflow_id === COZE_WORKFLOW_ID_EXTRACT) {
-      // 提取功能：使用 stream_run 端点
+      // 提取功能：使用 stream_run 端点和提取Token
       apiUrl = COZE_API_URL_EXTRACT;
+      apiToken = COZE_API_TOKEN_EXTRACT;
       requestBody = {
         "workflow_id": workflow_id,
         "parameters": {
@@ -123,8 +125,9 @@ export async function POST(request) {
         }
       };
     } else if (workflow_id === COZE_WORKFLOW_ID_DOWNLOAD) {
-      // 下载功能：使用 chat 端点
+      // 下载功能：使用 chat 端点和下载Token
       apiUrl = COZE_API_URL_DOWNLOAD;
+      apiToken = COZE_API_TOKEN_DOWNLOAD;
       requestBody = {
         "workflow_id": workflow_id,
         "parameters": {
@@ -144,6 +147,7 @@ export async function POST(request) {
     } else {
       // 默认使用提取功能格式
       apiUrl = COZE_API_URL_EXTRACT;
+      apiToken = COZE_API_TOKEN_EXTRACT;
       requestBody = {
         "workflow_id": workflow_id,
         "parameters": {
@@ -154,14 +158,14 @@ export async function POST(request) {
 
     console.log('调用Coze API，工作流ID:', workflow_id);
     console.log('请求URL:', apiUrl);
-    console.log('Authorization Header:', `Bearer ${COZE_API_TOKEN.substring(0, 20)}...`);
+    console.log('Authorization Header:', `Bearer ${apiToken.substring(0, 20)}...`);
     console.log('请求体:', JSON.stringify(requestBody, null, 2));
 
     // 调用Coze API
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${COZE_API_TOKEN}`,
+        'Authorization': `Bearer ${apiToken}`,
         'Content-Type': 'application/json',
         'Accept': 'text/event-stream'
       },
