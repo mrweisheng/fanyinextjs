@@ -76,3 +76,7 @@ fanyinextjs/
 最简单的部署 Next.js 应用程序的方法是使用 [Vercel 平台](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)。
 
 查看 [Next.js 部署文档](https://nextjs.org/docs/deployment) 了解更多详细信息。
+
+## 更新日志
+
+- 2025-09-06: 修复部署脚本，确保样式文件正确生成，添加开发依赖安装
