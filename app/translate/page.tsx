@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import TypewriterText from '@/components/TypewriterText'
 
+// 测试自动部署
+
 export default function TranslatePage() {
   const [inputText, setInputText] = useState('')
   const [outputText, setOutputText] = useState('')
