@@ -23,6 +23,16 @@ export default function Navigation() {
                 粤语翻译
               </Link>
               <Link
+                href="/audio-synthesis"
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                  pathname === '/audio-synthesis'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                    : 'text-gray-700 hover:bg-white/30 hover:text-gray-900'
+                }`}
+              >
+                音频合成
+              </Link>
+              <Link
                 href="/extract"
                 className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                   pathname === '/extract'
@@ -42,6 +52,7 @@ export default function Navigation() {
               >
                 短视频下载
               </Link>
+              
             </div>
           </div>
         </div>
