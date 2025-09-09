@@ -8,9 +8,10 @@ export default function AudioSynthesisPage() {
   const [inputText, setInputText] = useState('')
   const [audioUrl, setAudioUrl] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
-  const [voiceId, setVoiceId] = useState('moss_audio_107106b4-8d24-11f0-9aaa-e2737c68e713')
+  const [voiceId, setVoiceId] = useState('moss_audio_d1ae4e42-8d5f-11f0-a6ee-7eb703006c21')
   const [speed, setSpeed] = useState(1)
-  const [volume, setVolume] = useState(1)
+  const [volume, setVolume] = useState(2) // 默认明哥（低调）音量为2
+  const [maxVolume, setMaxVolume] = useState(4.0) // 动态最大音量值
 
   // 页面加载时恢复状态
   useEffect(() => {
@@ -239,8 +240,22 @@ export default function AudioSynthesisPage() {
                 {/* 音色选择 */}
                 <div className="space-y-3">
                   <label className="text-sm font-medium text-gray-700">音色选择</label>
-                  <select value={voiceId} onChange={(e) => setVoiceId(e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 font-medium">
-                    <option value="moss_audio_107106b4-8d24-11f0-9aaa-e2737c68e713">明哥</option>
+                  <select value={voiceId} onChange={(e) => {
+                    const newVoiceId = e.target.value;
+                    setVoiceId(newVoiceId);
+                    // 根据音色选择自动调整音量范围和初始值
+                    if (newVoiceId === 'moss_audio_d1ae4e42-8d5f-11f0-a6ee-7eb703006c21') {
+                      // 明哥（低调）：范围0.1-4.0，默认值2.0
+                      setMaxVolume(4.0);
+                      setVolume(2.0);
+                    } else {
+                      // 其他选项：范围0.1-2.0，默认值1.0
+                      setMaxVolume(2.0);
+                      setVolume(1.0);
+                    }
+                  }} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 font-medium">
+                    <option value="moss_audio_d1ae4e42-8d5f-11f0-a6ee-7eb703006c21">明哥（低调）</option>
+                    <option value="moss_audio_8577dac6-8d60-11f0-942d-1e1494fe81cf">明哥（高调）</option>
                     <option value="moss_audio_ecdd2991-8a01-11f0-9602-7aacfe011ce5">coco</option>
                   </select>
                 </div>
@@ -260,7 +275,7 @@ export default function AudioSynthesisPage() {
                 <div className="space-y-3">
                   <label className="text-sm font-medium text-gray-700">音量: {volume}x</label>
                   <div className="relative">
-                    <input type="range" min="0.1" max="1.9" step="0.1" value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider" style={{ background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((volume - 0.1) / (1.9 - 0.1)) * 100}%, #e5e7eb ${((volume - 0.1) / (1.9 - 0.1)) * 100}%, #e5e7eb 100%)`, WebkitAppearance: 'none', height: '8px' }} />
+                    <input type="range" min="0.1" max={maxVolume} step="0.1" value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider" style={{ background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((volume - 0.1) / (maxVolume - 0.1)) * 100}%, #e5e7eb ${((volume - 0.1) / (maxVolume - 0.1)) * 100}%, #e5e7eb 100%)`, WebkitAppearance: 'none', height: '8px' }} />
                   </div>
                   <div className="flex justify-between text-xs text-gray-500">
                     <span>小声</span>
