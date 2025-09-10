@@ -12,6 +12,7 @@ export default function AudioSynthesisPage() {
   const [speed, setSpeed] = useState(1)
   const [volume, setVolume] = useState(2) // 默认明哥（低调）音量为2
   const [maxVolume, setMaxVolume] = useState(4.0) // 动态最大音量值
+  const [showConfirmation, setShowConfirmation] = useState(false)
 
   // 页面加载时恢复状态
   useEffect(() => {
@@ -205,7 +206,7 @@ export default function AudioSynthesisPage() {
                     </div>
                   ) : (
                     <div className="flex items-center justify-center py-4">
-                      <button onClick={handleGenerate} disabled={!inputText.trim() || isGenerating} className="group relative px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm">
+                      <button onClick={() => setShowConfirmation(true)} disabled={!inputText.trim() || isGenerating} className="group relative px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm">
                         <span className="relative z-10 flex items-center justify-center gap-2">
                           {isGenerating ? (
                             <>
@@ -291,6 +292,31 @@ export default function AudioSynthesisPage() {
           </div>
         </div>
       </div>
+      {showConfirmation && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 shadow-2xl max-w-sm w-full">
+            <h2 className="text-xl font-bold mb-4 text-gray-800">请确认</h2>
+            <p className="mb-6 text-gray-600">请确保您输入的文本是粤语，目前我们只支持将粤语文本合成为语音。</p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setShowConfirmation(false)}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                取消
+              </button>
+              <button
+                onClick={() => {
+                  handleGenerate();
+                  setShowConfirmation(false);
+                }}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                确认
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
